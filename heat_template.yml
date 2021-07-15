@@ -21,21 +21,21 @@ parameters:
     type: string
     default: "tcp"
   security_groupe_rule_port_min:
-    type: integer
+    type: string
     default: 0
   security_groupe_rule_port_max:
-    type: integer
+    type: string
     default: 65535
-    
+
 resources:
   networks:
     type: OS::Neutron::Net
     properties:
       name: {get_param: network_name}
-      shared: flase
+      shared: false
 
   subnet:
-    type: type: OS::Neutron::Subnet
+    type: OS::Neutron::Subnet
     properties:
       network: {get_resource: networks}
       name: {get_param: subnet_name}
@@ -44,6 +44,7 @@ resources:
       dns_nameservers:
         - 8.8.8.8
       enable_dhcp: true
+
   router:
     type: OS::Neutron::Router
     properties:
@@ -62,7 +63,6 @@ resources:
     properties:
       name: {get_param: key_pair_name}
       public_key: {get_param: pub_key}
-      type: "ssh"
 
   security_group:
     type: OS::Neutron::SecurityGroup
