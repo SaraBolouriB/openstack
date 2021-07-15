@@ -7,3 +7,6 @@ parameters:
   key_pair_name: "cloud-ssh"
   pub_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDhbItwFSuZBfkIB+CXBfU45duoy04DrgUkHlWr6XYuZpNiHPmz2ukHvam0XZmDCuD9KNXRhL2uY5eG2vlIzyUn/p+LSC5aeiq/i4YVPqXEsY1RypSudqClq2xQDX9VwcBeSWLliSb3UdVJqmU7TkzDa0fk8YJgVQJ2Hfl6iGanw4mnu8hfuqvJ07iBzqA/I1muc2BiytIIv5E3b5BcLJihrZ6HRf/cPTnoH2wtsH8lEuesHElr9luNIh0Oe+LyWcEF+xyz2N89IZ/7QyLqxz5AnLDLmQ6zPscco1SbEFEA9wTCmVW34p5rsj29syW7FwwcZpKURgwlSn/sOsx27uLSbkXN6oCizDnZu+JruyvtARZ4F5XbiKmClIfSaBiroKYEFnkV9H92OgWqSonJU62nnm44haz0rWtgqXFIzOaOIcoeFHYMF3P++XKs3o6spIZG1wYhhweGYFCDvSTt7nM9rs6eDIn7dDhM8hVQj/DimmOYoq6qeohJ4vOtI1/FtaE= root@aio"
   security_group_name: "ssh"
+  security_groupe_rule: "tcp"
+  security_groupe_rule_port_min: 22
+  security_groupe_rule_port_max: 22
