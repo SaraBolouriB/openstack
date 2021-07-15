@@ -1,0 +1,29 @@
+heat_template_version: 2018-08-31
+
+parameters:
+  network_name:
+    type: string
+  subnet_name:
+    type: string
+  network_address:
+    type: string
+  gateway_ip:
+    type: string
+    
+resources:
+  networks:
+    type: OS::Neutron::Net
+    properties:
+      name: {get_param: network_name}
+      shared: flase
+
+  subnet:
+    type: type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: networks}
+      name: {get_param: subnet_name}
+      cidr: {get_param: network_address}
+      gateway_ip: {get_param: gateway_ip}
+      dns_nameservers:
+        - 8.8.8.8
+      enable_dhcp: true
