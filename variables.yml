@@ -1,5 +1,5 @@
 parameters:
-  network_name: "auth_app"
+  network_name: "auth-app"
   subnet_name: "auth_app_sebnet"
   network_address: "192.168.65.0/26"
   gateway_ip: "192.168.65.1"
