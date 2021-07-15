@@ -17,6 +17,15 @@ parameters:
     type: string
   security_group_name:
     type: string
+  security_groupe_rule:
+    type: string
+    default: "tcp"
+  security_groupe_rule_port_min:
+    type: integer
+    default: 0
+  security_groupe_rule_port_max:
+    type: integer
+    default: 65535
     
 resources:
   networks:
@@ -47,6 +56,7 @@ resources:
     properties:
       router: {get_resource: router}
       subnet: {get_resource: subnet}
+
   ssh_key_pairs:
     type: OS::Nova::KeyPair
     properties:
@@ -58,3 +68,11 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       name: {get_param: security_group_name}
+
+  security_group_rules:
+    type: OS::Neutron::SecurityGroupRule
+    properties:
+      security_group: {get_resource: security_group}
+      protocol: {get_param: security_groupe_rule}
+      port_range_min: {get_param: security_groupe_rule_port_min}
+      port_range_max: {get_param: security_groupe_rule_port_max}
