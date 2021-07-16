@@ -14,3 +14,9 @@ resources:
     type: OS::Heat::ResourceGroup   
     properties:
       count: 3
+      resource_def:
+        type: OS::Nova::Server
+        properties:
+          name: app-%index%
+          image: af497627-6eb6-4d75-b2d5-935bd1d8ae04
+          key_name: cloud-ssh
