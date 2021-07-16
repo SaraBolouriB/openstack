@@ -10,3 +10,7 @@ resources:
       key_name: cloud-ssh
       networks: [ {network: auth-app, fixed_ip: 192.168.65.52} ]
       security_groups: [default]
+  instance:
+    type: OS::Heat::ResourceGroup   
+    properties:
+      count: 3
