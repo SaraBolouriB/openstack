@@ -1,0 +1,9 @@
+heat_template_version: 2018-08-31
+
+resources:
+  mongodb:  
+    type: OS::Nova::Server
+    properties:
+      name: MongoDB
+      image: ed7d0907-565d-4a49-aa4c-67c86a5c3e08
+      
