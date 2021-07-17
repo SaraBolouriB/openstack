@@ -11,6 +11,9 @@ parameters:
     type: string
   algorithm:
     type: string
+  monitor_type:
+    type: string
+    default: "PING"
 
 resources:
 
@@ -53,3 +56,13 @@ resources:
       pool: {get_resource: pool}
       address: '192.168.65.48'
       protocol_port: 80
+      
+  monitor:
+    type: OS::Octavia::HealthMonitor
+    properties:
+      type: {get_param: monitor_type}
+      pool: {get_resource: pool}
+      timeout: 5
+      max_retries: 3
+      delay: 5
+  
