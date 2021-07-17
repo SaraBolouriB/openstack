@@ -10,10 +10,3 @@ parameters:
   security_groupe_rule: "tcp"
   security_groupe_rule_port_min: 22
   security_groupe_rule_port_max: 22
-  load_balancer_name: "load-balancer"
-  algorithm: ROUND_ROBIN
-  monitor_type: HTTP
-  monitor_url_path: /authentiq/v1/heartbeat/
-  load_balancer_subnet: a883d423-3aa7-408d-a2c8-d03f52d5bb51
-  listener_protocol: HTTP
-  protocol_port: 80
