@@ -9,6 +9,8 @@ parameters:
     type: string
   listener_port:
     type: string
+  algorithm:
+    type: string
 
 resources:
 
@@ -24,3 +26,10 @@ resources:
       protocol: {get_param: listener_protocol}
       loadbalancer: {get_resource: load_balancer}
       protocol_port: {get_param: listener_port}
+
+  pool:
+    type: OS::Octavia::Pool
+    properties:
+      lb_algorithm: {get_param: algorithm}
+      loadbalancer: {get_resource: load_balancer}
+      protocol: HTTP

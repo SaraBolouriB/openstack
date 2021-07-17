@@ -3,3 +3,4 @@ parameters:
   load_balancer_subnet: auth-app-subnet
   listener_protocol: HTTP
   listener_port: 80
+  algorithm: "ROUND_ROBIN"
