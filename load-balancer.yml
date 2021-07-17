@@ -33,3 +33,23 @@ resources:
       lb_algorithm: {get_param: algorithm}
       loadbalancer: {get_resource: load_balancer}
       protocol: HTTP
+  pool_member1:
+    type: OS::Octavia::PoolMember
+    properties: 
+      pool: {get_resource: pool}
+      address: '192.168.65.41'
+      protocol_port: 80
+    
+  pool_member2:
+    type: OS::Octavia::PoolMember
+    properties: 
+      pool: {get_resource: pool}
+      address: '192.168.65.57'
+      protocol_port: 80
+
+  pool_member3:
+    type: OS::Octavia::PoolMember
+    properties: 
+      pool: {get_resource: pool}
+      address: '192.168.65.48'
+      protocol_port: 80
