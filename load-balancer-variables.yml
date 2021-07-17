@@ -1,0 +1,3 @@
+parameters:
+  load_balancer_name: "load-balancer"
+  load_balancer_subnet: auth-app-subnet
