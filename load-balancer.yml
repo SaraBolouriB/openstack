@@ -5,6 +5,10 @@ parameters:
     type: string
   load_balancer_subnet:
     type: string
+  listener_protocol:
+    type: string
+  listener_port:
+    type: string
 
 resources:
 
