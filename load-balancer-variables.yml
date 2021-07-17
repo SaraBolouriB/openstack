@@ -4,3 +4,4 @@ parameters:
   listener_protocol: HTTP
   listener_port: 80
   algorithm: "ROUND_ROBIN"
+  monitor_type: "PING"
