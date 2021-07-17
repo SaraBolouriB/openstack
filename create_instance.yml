@@ -6,7 +6,11 @@ parameters:
   db_flavor:
     type: string
   db_key:
-
+    type: string
+  instance_key:
+    type: string
+  instance_flavor:
+    type: string  
 
 resources:
   mongodb:  
@@ -28,7 +32,7 @@ resources:
         properties:
           name: app-%index%
           image: af497627-6eb6-4d75-b2d5-935bd1d8ae04
-          key_name: cloud-ssh
-          flavor: app-node
+          key_name: {get_param: instance_key}
+          flavor: {get_param: instance_flavor}
           networks: [ {network: auth-app} ]
           security_groups: [default]

@@ -2,3 +2,5 @@ parameters:
   db_name: MongoDB
   db_flavor: database-node
   db_key: cloud-ssh
+  instance_key: cloud-ssh
+  instance_flavor: app-node
