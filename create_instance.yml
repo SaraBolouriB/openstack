@@ -1,15 +1,24 @@
 heat_template_version: 2018-08-31
 
+parameters:
+  db_name:
+    type: string
+  db_flavor:
+    type: string
+  db_key:
+
+
 resources:
   mongodb:  
     type: OS::Nova::Server
     properties:
-      name: MongoDB
+      name: {get_param: db_name}
       image: ed7d0907-565d-4a49-aa4c-67c86a5c3e08
-      flavor: database-node
-      key_name: cloud-ssh
+      flavor: {get_param: db_flavor}
+      key_name: {get_param: db_key}
       networks: [ {network: auth-app, fixed_ip: 192.168.65.52} ]
       security_groups: [default]
+
   instance:
     type: OS::Heat::ResourceGroup   
     properties:
