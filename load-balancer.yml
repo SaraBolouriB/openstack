@@ -13,3 +13,10 @@ resources:
     properties:
       name: {get_param: load_balancer_name}
       vip_subnet: {get_param: load_balancer_subnet}
+
+  listener:
+    type: OS::Octavia::Listener
+    properties:
+      protocol: {get_param: listener_protocol}
+      loadbalancer: {get_resource: load_balancer}
+      protocol_port: {get_param: listener_port}
