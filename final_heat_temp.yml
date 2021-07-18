@@ -157,27 +157,31 @@ resources:
       lb_algorithm: {get_param: algorithm}
       loadbalancer: {get_resource: load_balancer}
       protocol: HTTP
+      listener: {get_resource: listener}
 
   pool_member1:
     type: OS::Octavia::PoolMember
     properties: 
       pool: {get_resource: pool}
-      address: { get_attr: [instance-1, first_address]}
+      address: {get_attr: [instance-1, first_address]}
       protocol_port: 80
+      subnet: {get_resource: subnet}
     
   pool_member2:
     type: OS::Octavia::PoolMember
     properties: 
       pool: {get_resource: pool}
-      address: { get_attr: [instance-2, first_address]}
+      address: {get_attr: [instance-2, first_address]}
       protocol_port: 80
+      subnet: {get_resource: subnet}
 
   pool_member3:
     type: OS::Octavia::PoolMember
     properties: 
       pool: {get_resource: pool}
-      address: { get_attr: [instance-3, first_address]}
+      address: {get_attr: [instance-3, first_address]}
       protocol_port: 80
+      subnet: {get_resource: subnet}
       
   monitor:
     type: OS::Octavia::HealthMonitor
@@ -187,3 +191,6 @@ resources:
       timeout: 5
       max_retries: 3
       delay: 5
+      expected_codes: 200
+      http_method: GET
+      url_path: "/authentiq/v1/heartbeat"
