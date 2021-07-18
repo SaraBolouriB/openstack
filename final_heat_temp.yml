@@ -1,0 +1,191 @@
+heat_template_version: 2018-08-31
+
+parameters:
+  network_name:
+    type: string
+  subnet_name:
+    type: string
+  network_address:
+    type: string
+  gateway_ip:
+    type: string
+  router_name:
+    type: string
+  key_pair_name:
+    type: string
+  pub_key:
+    type: string
+  security_group_name:
+    type: string
+  security_groupe_rule:
+    type: string
+    default: "tcp"
+  security_groupe_rule_port_min:
+    type: string
+    default: 0
+  security_groupe_rule_port_max:
+    type: string
+    default: 65535
+
+  db_name:
+    type: string
+  db_flavor:
+    type: string
+  instance_flavor:
+    type: string 
+
+  load_balancer_name:
+    type: string
+  listener_protocol:
+    type: string
+  listener_port:
+    type: string
+  algorithm:
+    type: string
+  monitor_type:
+    type: string
+    default: "PING"
+
+resources:
+  networks:
+    type: OS::Neutron::Net
+    properties:
+      name: {get_param: network_name}
+      shared: false
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network: {get_resource: networks}
+      name: {get_param: subnet_name}
+      cidr: {get_param: network_address}
+      gateway_ip: {get_param: gateway_ip}
+      dns_nameservers:
+        - 8.8.8.8
+      enable_dhcp: true
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      name: {get_param: router_name}
+      external_gateway_info:
+        network: public
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router: {get_resource: router}
+      subnet: {get_resource: subnet}
+
+  ssh_key_pairs:
+    type: OS::Nova::KeyPair
+    properties:
+      name: {get_param: key_pair_name}
+      public_key: {get_param: pub_key}
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: {get_param: security_group_name}
+
+  security_group_rules:
+    type: OS::Neutron::SecurityGroupRule
+    properties:
+      security_group: {get_resource: security_group}
+      protocol: {get_param: security_groupe_rule}
+      port_range_min: {get_param: security_groupe_rule_port_min}
+      port_range_max: {get_param: security_groupe_rule_port_max}
+
+  
+  mongodb:  
+    type: OS::Nova::Server
+    properties:
+      name: {get_param: db_name}
+      image: ed7d0907-565d-4a49-aa4c-67c86a5c3e08
+      flavor: {get_param: db_flavor}
+      key_name: {get_resource: ssh_key_pairs}
+      networks: [ {network: {get_resource: networks}, fixed_ip: 192.168.65.52} ]
+        
+        
+      security_groups: [default]
+
+  instance-1:
+    type: OS::Nova::Server
+    properties:
+      name: app-1
+      image: af497627-6eb6-4d75-b2d5-935bd1d8ae04
+      key_name: {get_resource: ssh_key_pairs}
+      flavor: {get_param: instance_flavor}
+      networks: [network: {get_resource: networks}]
+      security_groups: [default]
+
+  instance-2:
+    type: OS::Nova::Server
+    properties:
+      name: app-2
+      image: af497627-6eb6-4d75-b2d5-935bd1d8ae04
+      key_name: {get_resource: ssh_key_pairs}
+      flavor: {get_param: instance_flavor}
+      networks: [network: {get_resource: networks}]
+      security_groups: [default]
+
+  instance-3:
+    type: OS::Nova::Server
+    properties:
+      name: app-3
+      image: af497627-6eb6-4d75-b2d5-935bd1d8ae04
+      key_name: {get_resource: ssh_key_pairs}
+      flavor: {get_param: instance_flavor}
+      networks: [network: {get_resource: networks}]
+      security_groups: [default]
+
+
+  load_balancer:
+    type: OS::Octavia::LoadBalancer
+    properties:
+      name: {get_param: load_balancer_name}
+      vip_subnet: {get_resource: subnet}
+
+  listener:
+    type: OS::Octavia::Listener
+    properties:
+      protocol: {get_param: listener_protocol}
+      loadbalancer: {get_resource: load_balancer}
+      protocol_port: {get_param: listener_port}
+
+  pool:
+    type: OS::Octavia::Pool
+    properties:
+      lb_algorithm: {get_param: algorithm}
+      loadbalancer: {get_resource: load_balancer}
+      protocol: HTTP
+
+  pool_member1:
+    type: OS::Octavia::PoolMember
+    properties: 
+      pool: {get_resource: pool}
+      address: {get_resource: instance-1}
+      protocol_port: 80
+    
+  pool_member2:
+    type: OS::Octavia::PoolMember
+    properties: 
+      pool: {get_resource: pool}
+      address: {get_resource: instance-2}
+      protocol_port: 80
+
+  pool_member3:
+    type: OS::Octavia::PoolMember
+    properties: 
+      pool: {get_resource: pool}
+      address: {get_resource: instance-3}
+      protocol_port: 80
+      
+  monitor:
+    type: OS::Octavia::HealthMonitor
+    properties:
+      type: {get_param: monitor_type}
+      pool: {get_resource: pool}
+      timeout: 5
+      max_retries: 3
+      delay: 5
