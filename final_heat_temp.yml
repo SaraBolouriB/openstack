@@ -105,8 +105,6 @@ resources:
       flavor: {get_param: db_flavor}
       key_name: {get_resource: ssh_key_pairs}
       networks: [ {network: {get_resource: networks}, fixed_ip: 192.168.65.52} ]
-        
-        
       security_groups: [default]
 
   instance-1:
@@ -164,21 +162,21 @@ resources:
     type: OS::Octavia::PoolMember
     properties: 
       pool: {get_resource: pool}
-      address: {get_resource: instance-1}
+      address: { get_attr: [instance-1, first_address]}
       protocol_port: 80
     
   pool_member2:
     type: OS::Octavia::PoolMember
     properties: 
       pool: {get_resource: pool}
-      address: {get_resource: instance-2}
+      address: { get_attr: [instance-2, first_address]}
       protocol_port: 80
 
   pool_member3:
     type: OS::Octavia::PoolMember
     properties: 
       pool: {get_resource: pool}
-      address: {get_resource: instance-3}
+      address: { get_attr: [instance-3, first_address]}
       protocol_port: 80
       
   monitor:
