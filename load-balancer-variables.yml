@@ -1,7 +1,0 @@
-parameters:
-  load_balancer_name: "load-balancer"
-  load_balancer_subnet: auth_app_sebnet
-  listener_protocol: HTTP
-  listener_port: 80
-  algorithm: "ROUND_ROBIN"
-  monitor_type: "PING"
